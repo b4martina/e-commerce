@@ -24,8 +24,8 @@ public class User {
     @Column (name= "NAME")
     private String name;
 
-    @Column(name= "SURNAME")
-    private String surname;
+   // @Column(name= "SURNAME")
+    //private String surname;
 
     @Column(name="USERNAME")
     private  String username;
@@ -39,7 +39,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
             (name = "USER_ROLES", joinColumns = @JoinColumn(name="USER_ID", referencedColumnName = "ID"),
-                    inverseJoinColumns = @JoinColumn(name = " ROLE_ID", referencedColumnName = "ID"))
+                    inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID"))
 
     private List<Roles> roles = new ArrayList<>();
 

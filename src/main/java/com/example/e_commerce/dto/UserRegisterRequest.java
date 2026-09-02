@@ -7,8 +7,8 @@ public class UserRegisterRequest {
     @NotBlank(message= "name can not be blank ")
     private String name;
 
-    @NotBlank(message= "Surname can not be blank ")
-    private String surname;
+    //@NotBlank(message= "Surname can not be blank ")
+   // private String surname;
 
     @NotBlank(message = "username can not be empty")
     private String username;
@@ -22,9 +22,9 @@ public class UserRegisterRequest {
 
     public UserRegisterRequest(){}
 
-    public UserRegisterRequest(String name, String surname, String username, String email, String password) {
+    public UserRegisterRequest(String name, String username, String email, String password) {
         this.name = name;
-        this.surname = surname;
+        //this.surname = surname;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -38,13 +38,13 @@ public class UserRegisterRequest {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
+   // public String getSurname() {
+     //   return surname;
+    //}
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
+   // public void setSurname(String surname) {
+     //   this.surname = surname;
+    //}
 
     public String getUsername() {
         return username;

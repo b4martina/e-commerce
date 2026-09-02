@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 
 public class UserLogInRequest {
 
-    @NotBlank
+    @NotBlank(message = "username cannot be empty")
     private String username;
-    @NotBlank
+    @NotBlank(message = "password cannot be empty")
     private String password;
 
     public UserLogInRequest(){}
