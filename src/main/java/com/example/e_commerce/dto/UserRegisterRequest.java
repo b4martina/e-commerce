@@ -13,7 +13,7 @@ public class UserRegisterRequest {
     @NotBlank(message = "username can not be empty")
     private String username;
 
-    @NotBlank(message = "E-Mail cannot be blank")
+   // @NotBlank(message = "E-Mail cannot be blank")
     private String email;
 
     @NotBlank(message = "password cannot be empty") // Validation
