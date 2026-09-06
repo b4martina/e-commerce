@@ -1,6 +1,7 @@
 package com.example.e_commerce.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -35,6 +36,14 @@ public class User {
 
     @Column (name = "PASSWORD")
     private String password;
+
+
+    @OneToMany(mappedBy = "productOwner")
+    @JsonIgnore
+    private List<Product> product = new ArrayList<>();
+
+
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
