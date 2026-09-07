@@ -10,6 +10,7 @@ import jakarta.security.auth.message.config.AuthConfig;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -40,6 +41,12 @@ public class ProductController {
 
         ProductResponse product = productService.getProductById(id);
         return ResponseEntity.status(HttpStatus.OK).body(product);
+    }
+
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<ProductResponse>> pageable(@RequestParam int size, @RequestParam int page){
+        Page <ProductResponse> products = productService.getPaginatedProducts(size , page);
+        return ResponseEntity.ok(products);
     }
 
 

@@ -6,16 +6,25 @@ import com.example.e_commerce.model.Product;
 import com.example.e_commerce.model.User;
 import com.example.e_commerce.repository.ProductRepository;
 import com.example.e_commerce.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class ProductService {
 
     private ProductRepository productRepository;
-    private Product product;
     private UserRepository userRepository;
+
+    public ProductService(ProductRepository productRepository, UserRepository userRepository) {
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
+    }
 
     public Product createProduct (String username, ProductRequest productRequest){
         User productOwner = userRepository.findByUsername(username)
@@ -33,6 +42,7 @@ public class ProductService {
         product.setPrice(productRequest.getPrice());
         product.setStockQuantity(productRequest.getStockQuantity());
         product.setCategory(productRequest.getCategory());
+        product.setCreatedAt(LocalDate.now());
         product.setActive(true);
         product.setProductOwner(productOwner);
 
@@ -60,6 +70,22 @@ public class ProductService {
 
         return pr;
     }
+
+    public Page<ProductResponse> getPaginatedProducts (int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page <Product> products = productRepository.findAll(pageable);
+
+        return products.map(product-> new ProductResponse(
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getStockQuantity(),
+                product.getCategory()
+        ));
+    }
+
+
 
 
 

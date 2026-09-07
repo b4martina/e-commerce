@@ -1,6 +1,8 @@
 package com.example.e_commerce.config;
 
 
+import com.example.e_commerce.security.AuthenticationHandling;
+import com.example.e_commerce.security.CustomAccessDeniedHandler;
 import com.example.e_commerce.service.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,13 +30,15 @@ public class SecurityConfig {
 
     private final JWTAuthenticationFilter jwtFilter;
     private final CustomUserDetailService userDetailsService;
+    private final AuthenticationHandling authenticationHandling;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
-    public SecurityConfig(JWTAuthenticationFilter jwtFilter, CustomUserDetailService userDetailsService) {
+    public SecurityConfig(JWTAuthenticationFilter jwtFilter, CustomUserDetailService userDetailsService, AuthenticationHandling authenticationHandling, CustomAccessDeniedHandler accessDeniedHandler) {
         this.jwtFilter = jwtFilter;
         this.userDetailsService = userDetailsService;
+        this.authenticationHandling = authenticationHandling;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
-
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,6 +47,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(authenticationHandling)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/user/**").permitAll()
                       //  .requestMatchers(HttpMethod.GET, "/api/blog/**").permitAll()
