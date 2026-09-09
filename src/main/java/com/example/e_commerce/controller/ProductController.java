@@ -3,6 +3,7 @@ package com.example.e_commerce.controller;
 
 import com.example.e_commerce.dto.ProductRequest;
 import com.example.e_commerce.dto.ProductResponse;
+import com.example.e_commerce.model.Category;
 import com.example.e_commerce.model.Product;
 import com.example.e_commerce.service.AdminService;
 import com.example.e_commerce.service.ProductService;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -48,6 +51,30 @@ public class ProductController {
         Page <ProductResponse> products = productService.getPaginatedProducts(size , page);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/category")
+    public List<ProductResponse> filterByCategory (@RequestParam(required = false) Category category){
+        return productService.getCategorizedProducts(category);
+
+    }
+
+    @GetMapping("/categorie")
+    public List<ProductResponse> filterByCategory1 (@RequestParam(required = false) String category){
+        return productService.getCategorizedProducts1(category);
+
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Product> updateProduct (@PathVariable Long id, @RequestBody ProductRequest productRequest, Authentication authentication){
+
+        String username = authentication.getName();
+
+
+        return ResponseEntity.ok( productService.updatedProduct(id, productRequest, username));
+
+    }
+
+
 
 
 

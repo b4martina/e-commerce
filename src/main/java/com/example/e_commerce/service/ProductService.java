@@ -2,10 +2,12 @@ package com.example.e_commerce.service;
 
 import com.example.e_commerce.dto.ProductRequest;
 import com.example.e_commerce.dto.ProductResponse;
+import com.example.e_commerce.model.Category;
 import com.example.e_commerce.model.Product;
 import com.example.e_commerce.model.User;
 import com.example.e_commerce.repository.ProductRepository;
 import com.example.e_commerce.repository.UserRepository;
+import com.example.e_commerce.security.ResourceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -52,12 +56,17 @@ public class ProductService {
 
     public ProductResponse getProductById( Long id){
 
-            Product product = productRepository.findById(id).
+            /*Product product = productRepository.findById(id).
                 orElseThrow(()->new RuntimeException("product not found"));
 
         if (!product.isActive()) {
             throw new RuntimeException("Product not found");
-        }
+        }*/
+        Product product = productRepository.findById(id)
+                .filter(Product::isActive)
+                .orElseThrow(() ->
+                        new ResourceException("Product not found"));
+
 
 
         ProductResponse pr = new ProductResponse();
@@ -87,6 +96,86 @@ public class ProductService {
 
 
 
+    public List<ProductResponse> getCategorizedProducts (Category category){
+        List<Product> products;
+
+        if (category == null ){
+            products= productRepository.findAll();
+        } else {
+            products = productRepository.categoryFilteredProducts(category.name());
+        }
 
 
-}
+        List <ProductResponse> productResponsesList = new ArrayList<>();
+
+        for (Product product : products){
+            ProductResponse pr = new ProductResponse();
+
+            pr.setName(product.getName());
+            pr.setCategory(product.getCategory());
+            pr.setDescription(product.getDescription());
+            pr.setStockQuantity(product.getStockQuantity());
+            pr.setPrice(product.getPrice());
+
+            productResponsesList.add(pr);
+        }
+
+        return productResponsesList;
+
+    }
+
+
+
+    public List<ProductResponse> getCategorizedProducts1 (String category){
+        List<Product> products;
+
+        if (category == null ){
+            products= productRepository.findAll();
+        } else {
+            products = productRepository.findByCategory(category);
+        }
+
+        List <ProductResponse> productResponsesList = new ArrayList<>();
+
+        for (Product product : products){
+            ProductResponse pr = new ProductResponse();
+
+            pr.setName(product.getName());
+            pr.setCategory(product.getCategory());
+            pr.setDescription(product.getDescription());
+            pr.setStockQuantity(product.getStockQuantity());
+            pr.setPrice(product.getPrice());
+
+            productResponsesList.add(pr);
+        }
+        return productResponsesList;
+    }
+
+    public Product updatedProduct(Long id, ProductRequest productRequest, String username){
+
+        Product product= productRepository.findById(id).orElseThrow(()-> new RuntimeException("product not found, can not be updated"));
+
+        if (product.getProductOwner().getUsername().equals(username)){
+            throw new RuntimeException("This product can not be modified");
+            }
+        product.setCategory(productRequest.getCategory());
+        product.setDescription(productRequest.getDescription());
+        product.setStockQuantity(productRequest.getStockQuantity());
+        product.setPrice(productRequest.getPrice());
+
+        if (productRepository.existsByName(productRequest.getName())) {
+            throw new IllegalArgumentException("A product with this name already exists");
+        }
+        product.setName(productRequest.getName());
+
+        return product;
+
+        /*String name = product.getName();
+        if (!name.equals(productRequest.getName())){
+
+            throw new IllegalArgumentException("A product with this name already exists");
+            */}
+ }
+
+    public
+
