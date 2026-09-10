@@ -3,11 +3,13 @@ package com.example.e_commerce.controller;
 
 import com.example.e_commerce.dto.ProductRequest;
 import com.example.e_commerce.dto.ProductResponse;
+import com.example.e_commerce.dto.StockRequest;
 import com.example.e_commerce.model.Category;
 import com.example.e_commerce.model.Product;
 import com.example.e_commerce.service.AdminService;
 import com.example.e_commerce.service.ProductService;
 import jakarta.security.auth.message.config.AuthConfig;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.apache.coyote.Response;
@@ -73,6 +75,34 @@ public class ProductController {
         return ResponseEntity.ok( productService.updatedProduct(id, productRequest, username));
 
     }
+
+    @PatchMapping("/update/{id}/stock")
+    public ResponseEntity<Product> adjustStock(
+            @PathVariable Long id,
+            @Valid @RequestBody StockRequest request,
+            Authentication authentication) {
+
+        String username = authentication.getName();
+
+        return ResponseEntity.ok(
+                productService.adjustStock(id, request, username)
+        );
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id, Authentication authentication){
+
+        String username= authentication.getName();
+        productService.deleteProduct(id, username);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+    @GetMapping ("/all-products")
+    public List<ProductResponse> getAllProducts(){
+        return productService.getAllProducts();
+    }
+
 
 
 

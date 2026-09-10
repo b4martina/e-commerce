@@ -2,16 +2,17 @@ package com.example.e_commerce.service;
 
 import com.example.e_commerce.dto.ProductRequest;
 import com.example.e_commerce.dto.ProductResponse;
+import com.example.e_commerce.dto.StockRequest;
 import com.example.e_commerce.model.Category;
 import com.example.e_commerce.model.Product;
 import com.example.e_commerce.model.User;
 import com.example.e_commerce.repository.ProductRepository;
 import com.example.e_commerce.repository.UserRepository;
 import com.example.e_commerce.security.ResourceException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -67,8 +68,6 @@ public class ProductService {
                 .orElseThrow(() ->
                         new ResourceException("Product not found"));
 
-
-
         ProductResponse pr = new ProductResponse();
 
         pr.setName(product.getName());
@@ -94,8 +93,6 @@ public class ProductService {
         ));
     }
 
-
-
     public List<ProductResponse> getCategorizedProducts (Category category){
         List<Product> products;
 
@@ -105,12 +102,10 @@ public class ProductService {
             products = productRepository.categoryFilteredProducts(category.name());
         }
 
-
         List <ProductResponse> productResponsesList = new ArrayList<>();
 
         for (Product product : products){
             ProductResponse pr = new ProductResponse();
-
             pr.setName(product.getName());
             pr.setCategory(product.getCategory());
             pr.setDescription(product.getDescription());
@@ -119,9 +114,7 @@ public class ProductService {
 
             productResponsesList.add(pr);
         }
-
         return productResponsesList;
-
     }
 
 
@@ -139,13 +132,11 @@ public class ProductService {
 
         for (Product product : products){
             ProductResponse pr = new ProductResponse();
-
             pr.setName(product.getName());
             pr.setCategory(product.getCategory());
             pr.setDescription(product.getDescription());
             pr.setStockQuantity(product.getStockQuantity());
             pr.setPrice(product.getPrice());
-
             productResponsesList.add(pr);
         }
         return productResponsesList;
@@ -154,8 +145,7 @@ public class ProductService {
     public Product updatedProduct(Long id, ProductRequest productRequest, String username){
 
         Product product= productRepository.findById(id).orElseThrow(()-> new RuntimeException("product not found, can not be updated"));
-
-        if (product.getProductOwner().getUsername().equals(username)){
+        if (!product.getProductOwner().getUsername().equals(username)){
             throw new RuntimeException("This product can not be modified");
             }
         product.setCategory(productRequest.getCategory());
@@ -167,15 +157,60 @@ public class ProductService {
             throw new IllegalArgumentException("A product with this name already exists");
         }
         product.setName(productRequest.getName());
-
         return product;
+}
 
-        /*String name = product.getName();
-        if (!name.equals(productRequest.getName())){
+@Transactional
+public Product adjustStock (Long id, StockRequest stockQuantityRequest, String username ){
+        Product product = productRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("cant adjust"));
 
-            throw new IllegalArgumentException("A product with this name already exists");
-            */}
- }
+        if (!product.getProductOwner().getUsername().equals(username)){
+            throw  new RuntimeException("cant adjust stock");}
 
-    public
+            long newStock = product.getStockQuantity() + stockQuantityRequest.getStockQuantity();
+
+            if (newStock <0 ){
+                throw new IllegalArgumentException("Stock can not be negative. Check the value of the added stock!");
+            }
+            product.setStockQuantity(newStock);
+            return productRepository.save(product);
+}
+
+
+@Transactional
+    public void deleteProduct (Long id, String username){
+        Product product= productRepository.findById(id).orElseThrow(()->new RuntimeException("can not delete this product"));
+        if (!product.getProductOwner().getUsername().equals(username)) {
+        throw new RuntimeException("You cannot delete this product");
+    }
+    productRepository.delete(product);
+}
+
+//@Transactional
+    public List<ProductResponse> getAllProducts (){
+    List <Product> products = productRepository.findAll();
+
+            List <ProductResponse> productResponse = new ArrayList<>();
+            for (Product product: products ){
+                if (product.isActive()){
+                ProductResponse pr = new ProductResponse();
+                pr.setName(product.getName());
+                pr.setCategory(product.getCategory());
+                pr.setDescription(product.getDescription());
+                pr.setStockQuantity(product.getStockQuantity());
+                pr.setPrice(product.getPrice());
+
+                productResponse.add(pr);
+            }}
+          return productResponse;
+    }
+
+
+
+
+
+}
+
+
 

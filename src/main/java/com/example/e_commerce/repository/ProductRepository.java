@@ -22,4 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> categoryFilteredProducts (@Param ("category") String category);
 
     Optional<Product> findById(Long id);
+
+    Optional <Product> findByActive(boolean active);
 }
