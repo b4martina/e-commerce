@@ -43,13 +43,24 @@ public class User {
     private List<Product> product = new ArrayList<>();
 
 
-
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
             (name = "USER_ROLES", joinColumns = @JoinColumn(name="USER_ID", referencedColumnName = "ID"),
                     inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID"))
 
     private List<Roles> roles = new ArrayList<>();
+
+
+   /* @OneToMany(mappedBy = "productPurchaser")
+    @JsonIgnore
+    private Product orderedProduct= new Product();
+
+    */
+
+    @OneToMany(mappedBy =  "buyer")
+    @JsonIgnore
+    private  List<Order> ordersList;
+
+
 
 }

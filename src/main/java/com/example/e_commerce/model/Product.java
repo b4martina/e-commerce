@@ -7,6 +7,8 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Entity
 @Data
+@SQLDelete(sql = "UPDATE products SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
 @Table(name = "PRODUCTS")
 public class Product {
 
@@ -46,13 +50,11 @@ public class Product {
     @Column(name = "ACTIVE")
     private boolean active;
 
+    @Column(name= "DELETED")
+    private boolean deleted = false;
+
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     private LocalDate createdAt;
-
-    @ManyToOne
-    @JoinColumn(name= "OWNER_ID")
-    @JsonIgnore
-    private User productOwner;
 
     public boolean isActive() {
         return active;
@@ -61,4 +63,12 @@ public class Product {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    @ManyToOne
+    @JoinColumn(name= "OWNER_ID")
+    @JsonIgnore
+    private User productOwner;
+
 }
+
+
