@@ -1,9 +1,10 @@
 package com.example.e_commerce.service;
 
 
+import com.example.e_commerce.dto.OrderItemRequest;
 import com.example.e_commerce.dto.OrderRequest;
-import com.example.e_commerce.dto.ProductResponse;
-import com.example.e_commerce.model.Order;
+import com.example.e_commerce.dto.OrderResponse;
+import com.example.e_commerce.model.Orders;
 import com.example.e_commerce.model.OrderItems;
 import com.example.e_commerce.model.Product;
 import com.example.e_commerce.model.User;
@@ -11,9 +12,11 @@ import com.example.e_commerce.repository.OrderRepository;
 import com.example.e_commerce.repository.ProductRepository;
 import com.example.e_commerce.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.hibernate.query.Order;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -29,33 +32,12 @@ public class OrderService {
     }
 
     @Transactional
-    public Order createOrder (Long id, OrderRequest orderRequest, String username) {
-
-
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("product not found"));
-
+    public Orders createOrder (OrderRequest orderRequest, String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("user not foudn0"));
+                .orElseThrow(() -> new RuntimeException("user not found"));
 
-        int quantity = orderRequest.getQuantity();
-
-
-        if (quantity <= 0) {
-            throw new RuntimeException("Quantity must be greater than 0");
-        }
-
-
-        if (product.getStockQuantity() < quantity) {
-            throw new RuntimeException("Not enough stock");
-        }
-
-        product.setStockQuantity(
-                product.getStockQuantity() - quantity
-        );
-
-        Order order= new Order();
+        Orders order = new Orders();
         order.setBuyer(user);
         order.setCustomerName(orderRequest.getCustomerName());
         order.setStreetAdress(orderRequest.getStreetAdress());
@@ -68,19 +50,62 @@ public class OrderService {
         order.setExpirationDate(orderRequest.getExpirationDate());
         order.setSecurityCode(orderRequest.getSecurityCode());
 
-        OrderItems orderItem = new OrderItems();
+        for (OrderItemRequest orderItemRequest : orderRequest.getItems()) {
+            Product product = productRepository.findById(orderItemRequest.getProductId())
+                    .orElseThrow(() -> new RuntimeException("cant order this product"));
 
-        orderItem.setQuantity(quantity);
-        orderItem.setPrice(product.getPrice());
-        orderItem.setProduct(product);
-        orderItem.setOrder(order);
+            int quantity = orderItemRequest.getQuantity();
 
-        order.getOrderItems().add(orderItem);
+            if (product.getStockQuantity() < quantity) {
+                throw new RuntimeException("Not enough stock is  available for this product");
+            }
+                product.setStockQuantity(product.getStockQuantity() - quantity);
 
-        return orderRepository.save(order);
-    }
+                OrderItems orderItem = new OrderItems();
 
-//fixed it, no ch*t <3
+                orderItem.setProduct(product);
+                orderItem.setQuantity(quantity);
+                orderItem.setPrice(product.getPrice());
+                orderItem.setOrder(order);
+            }
+            return orderRepository.save(order);
+        }
+
+
+
+
+        public List<OrderResponse> getUserOrders ( String username){
+
+        User user = userRepository.findByUsername(username).
+                orElseThrow(() -> new RuntimeException( " user can not access the list "));
+
+            List<Orders> orders = orderRepository.findByBuyerId(user.getId());
+
+
+        if(orders.isEmpty()){
+            throw new RuntimeException("couldnt find orders");
+        }
+            List <OrderResponse> orderResponse = new ArrayList<>();
+            for (Orders order : orders ){
+                OrderResponse or= new OrderResponse();
+
+
+                or.setCustomerName(order.getCustomerName());
+                or.setStreetAdress(order.getStreetAdress());
+                or.setCity(order.getCity());
+                or.setCard(order.isCard());
+                or.setNameOfCard(order.getNameOfCard());
+
+                orderResponse.add(or);
+
+            }
+            return orderResponse;
+
+
+        }
+
+
+
 
 
 

@@ -12,8 +12,8 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "ORDER")
-public class Order{
+@Table(name = "ORDERS")
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +53,7 @@ public class Order{
     private Long securityCode;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "BUYER_ID")
     private User buyer;
 

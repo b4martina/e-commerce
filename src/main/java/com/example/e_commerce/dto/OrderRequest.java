@@ -15,10 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderRequest {
-   /* @NotBlank
-    private Long orderId;
-    @NotBlank
-*/
+
     private String customerName;
 
     @NotBlank
@@ -43,11 +40,7 @@ public class OrderRequest {
 
     private LocalDate expirationDate;
 
-
     private Long securityCode;
-
-    @Min(1)
-    private  int quantity;
 
     @Valid
     private List<OrderItemRequest> items;

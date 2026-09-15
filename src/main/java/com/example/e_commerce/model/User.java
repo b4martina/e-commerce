@@ -59,7 +59,7 @@ public class User {
 
     @OneToMany(mappedBy =  "buyer")
     @JsonIgnore
-    private  List<Order> ordersList;
+    private  List<Orders> ordersList;
 
 
 

@@ -2,12 +2,16 @@ package com.example.e_commerce.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name ="ORDER_ITEM")
 public class OrderItems {
 
@@ -25,7 +29,7 @@ public class OrderItems {
 
     @ManyToOne
     @JoinColumn(name=" ORDER_ID")
-    private Order order;
+    private Orders order;
 
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
