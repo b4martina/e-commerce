@@ -22,14 +22,6 @@ public class Order{
     @Column (name= "ORDER_ID")
     private Long orderId;
 
-
-   /* @Column(name = "PRODUCT_ID")
-    private Long productId;
-
-
-    @Column(name = "USER_ID")
-    private Long user_id;*/
-
     @Column(name ="CUSTOMER_NAME")
     private String customerName;
 
@@ -61,12 +53,12 @@ public class Order{
     private Long securityCode;
 
     @ManyToOne
-    @JoinColumn(name = "ORDERS_OF_USERS")
+    @JoinColumn(name = "BUYER_ID")
     private User buyer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List <OrderItems> orderItem = new ArrayList<>();
+    private List <OrderItems > orderItems = new ArrayList<>();
 
 
 }

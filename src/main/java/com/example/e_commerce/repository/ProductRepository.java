@@ -14,6 +14,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     boolean existsByName(String name);
 
+    Optional<Product> findById(Long id);
+
     List <Product> findAll();
     List<Product> findByCategory(String category);
 
@@ -21,7 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     value = "SELECT * from products WHERE category = :category")
     List<Product> categoryFilteredProducts (@Param ("category") String category);
 
-    Optional<Product> findById(Long id);
+    //Optional<Product> findById(Long id);
 
     Optional <Product> findByActive(boolean active);
 }
