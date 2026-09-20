@@ -3,12 +3,14 @@ package com.example.e_commerce.service;
 import com.example.e_commerce.dto.ProductRequest;
 import com.example.e_commerce.dto.ProductResponse;
 import com.example.e_commerce.dto.StockRequest;
+import com.example.e_commerce.exceptions.ProductNotAvailableException;
+import com.example.e_commerce.exceptions.StockException;
 import com.example.e_commerce.model.Category;
 import com.example.e_commerce.model.Product;
 import com.example.e_commerce.model.User;
 import com.example.e_commerce.repository.ProductRepository;
 import com.example.e_commerce.repository.UserRepository;
-import com.example.e_commerce.security.ResourceException;
+import com.example.e_commerce.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,9 +38,9 @@ public class ProductService {
                 .orElseThrow(()-> new UsernameNotFoundException("This user can not creae a blog"));
 
         if (productRequest.getStockQuantity() < 0) {
-            throw new IllegalArgumentException("Stock quantity cannot be negative");}
+            throw new StockException("Stock quantity cannot be negative");}
         if (productRepository.existsByName(productRequest.getName())) {
-            throw new IllegalArgumentException("A product with this name already exists");
+            throw new StockException("A product with this name already exists");
         }
         Product product = new Product();
 
@@ -55,18 +57,12 @@ public class ProductService {
 
     }
 
-    public ProductResponse getProductById( Long id){
+    public ProductResponse getProductById( Long id) throws ProductNotAvailableException {
 
-            /*Product product = productRepository.findById(id).
-                orElseThrow(()->new RuntimeException("product not found"));
-
-        if (!product.isActive()) {
-            throw new RuntimeException("Product not found");
-        }*/
         Product product = productRepository.findById(id)
                 .filter(Product::isActive)
                 .orElseThrow(() ->
-                        new ResourceException("Product not found"));
+                        new ProductNotAvailableException("Product not found"));
 
         ProductResponse pr = new ProductResponse();
 

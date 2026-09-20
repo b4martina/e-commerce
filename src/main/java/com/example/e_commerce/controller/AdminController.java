@@ -37,8 +37,6 @@ public class AdminController {
             return ResponseEntity.badRequest()
                     .body(e.getMessage());}
 
-        catch (AccessDeniedException e) {
-        throw new RuntimeException(e);}
     }
 
 

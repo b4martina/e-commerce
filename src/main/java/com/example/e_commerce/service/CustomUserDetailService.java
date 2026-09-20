@@ -22,31 +22,22 @@ import java.util.List;
 @Service
 public class CustomUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
-
     public CustomUserDetailService(UserRepository userRepository){
         this.userRepository= userRepository;
     }
-
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
        User user;
        user = userRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
 
        return org.springframework.security.core.userdetails.User
                .builder().username(user.getUsername())
-               .password(user.getPassword()).authorities(mapRolesToAuthorities(user.getRoles())).build();
+               .password(user.getPassword()).authorities(mapRolesToAuthorities(user.getRoles())).build();}
 
-
-    }
-
-
-    private Collection<GrantedAuthority> mapRolesToAuthorities(List<Roles> roles){
-        if (roles==null){
+    private Collection<GrantedAuthority> mapRolesToAuthorities(List<Roles> roles) {
+        if (roles == null) {
             return List.of();
         }
-
-        return roles.stream().map(role-> (GrantedAuthority) new SimpleGrantedAuthority("ROLE_"+ role.getRoleName()))
-                .toList();
-
-    }
+        return roles.stream().map(role -> (GrantedAuthority) new SimpleGrantedAuthority("ROLE_" + role.getRoleName()))
+                .toList();}
 
 }

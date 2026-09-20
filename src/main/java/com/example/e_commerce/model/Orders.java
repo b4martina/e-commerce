@@ -3,15 +3,20 @@ package com.example.e_commerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Builder
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "ORDERS")
 public class Orders {
 
@@ -60,6 +65,5 @@ public class Orders {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonIgnore
     private List <OrderItems > orderItems = new ArrayList<>();
-
 
 }

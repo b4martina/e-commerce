@@ -3,6 +3,8 @@ package com.example.e_commerce.controller;
 
 import com.example.e_commerce.dto.OrderRequest;
 import com.example.e_commerce.dto.OrderResponse;
+import com.example.e_commerce.exceptions.OrderNotAvailableException;
+import com.example.e_commerce.exceptions.ProductNotAvailableException;
 import com.example.e_commerce.model.Orders;
 import com.example.e_commerce.service.OrderService;
 import jakarta.validation.Valid;
@@ -14,30 +16,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-
     private final OrderService orderService;
-
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
-
-
     @PostMapping
-    public Orders createOrder (@Valid @RequestBody OrderRequest orderRequest, Authentication authentication){
+    public Orders createOrder (@Valid @RequestBody OrderRequest orderRequest, Authentication authentication) throws ProductNotAvailableException {
         String username = authentication.getName();
         return orderService.createOrder(orderRequest, username);
     }
-
-
-
     @GetMapping("/my-orders")
-    public List<OrderResponse> getAllUserOrders ( Authentication authentication){
-
+    public List<OrderResponse> getAllUserOrders ( Authentication authentication) throws OrderNotAvailableException {
         String username = authentication.getName();
-
         return orderService.getUserOrders(username);
-
     }
-
-
 }

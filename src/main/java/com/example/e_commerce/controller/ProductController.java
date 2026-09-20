@@ -4,6 +4,7 @@ package com.example.e_commerce.controller;
 import com.example.e_commerce.dto.ProductRequest;
 import com.example.e_commerce.dto.ProductResponse;
 import com.example.e_commerce.dto.StockRequest;
+import com.example.e_commerce.exceptions.ProductNotAvailableException;
 import com.example.e_commerce.model.Category;
 import com.example.e_commerce.model.Product;
 import com.example.e_commerce.service.AdminService;
@@ -42,7 +43,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity <?> getProductById(@PathVariable Long id){
+    public ResponseEntity <?> getProductById(@PathVariable Long id) throws ProductNotAvailableException {
 
         ProductResponse product = productService.getProductById(id);
         return ResponseEntity.status(HttpStatus.OK).body(product);

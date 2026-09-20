@@ -31,7 +31,7 @@ public class AdminService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User createAdmin (UserRegisterRequest urr) throws AccessDeniedException {
+    public User createAdmin (UserRegisterRequest urr) {
         User newAdmin = new User();
         newAdmin.setUsername(urr.getUsername());
         newAdmin.setName(urr.getName());

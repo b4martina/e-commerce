@@ -1,4 +1,4 @@
-package com.example.e_commerce.security;
+package com.example.e_commerce.exceptions;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+
+//may not need this, im using spring preauthorize
+//well no its used in security config
 @Component
 public class AuthenticationHandling implements AuthenticationEntryPoint {
     @Override

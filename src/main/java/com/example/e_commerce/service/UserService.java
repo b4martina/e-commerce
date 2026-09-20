@@ -80,17 +80,12 @@ public class UserService {
        User user;
        user = userRepository.findByUsername(logInRequest.getUsername()).orElseThrow(()
                -> new RuntimeException("username not found"));
-
        if (!passwordEncoder.matches(logInRequest.getPassword(), user.getPassword() )){
            throw new RuntimeException("The passwoed entered is not correct");
        }
-
        String token;
        token = jwtService.generateToken(user.getUsername());
-
        return new JWTResponse(token);
-
-
     }
 
 

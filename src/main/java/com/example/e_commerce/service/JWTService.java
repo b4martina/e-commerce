@@ -4,6 +4,7 @@ package com.example.e_commerce.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.Builder;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import javax.xml.crypto.Data;
@@ -12,6 +13,7 @@ import java.util.Date;
 
 //part 2 creating jwt token just created customuserdetailservice
 @Service
+@Builder
 public class JWTService {
 
     private final String SECRET_KEY = "keykeykeykeykeykeykeykey28282828";
