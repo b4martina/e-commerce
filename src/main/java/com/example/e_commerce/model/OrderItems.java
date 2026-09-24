@@ -24,11 +24,11 @@ public class OrderItems {
     @Column(name = "QUANTITY")
     private int quantity;
 
-    @Column(name = "PRICE ")
+    @Column(name = "PRICE")
     private BigDecimal price;
 
     @ManyToOne
-    @JoinColumn(name=" ORDER_ID")
+    @JoinColumn(name="ORDER_ID")
     private Orders order;
 
     @ManyToOne

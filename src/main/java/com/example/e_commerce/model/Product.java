@@ -39,7 +39,7 @@ public class Product {
     @DecimalMin(value = "0.01", message = "Price must be greater than 0")
     private BigDecimal price;
 
-    @Column(name = " STOCK_QUANTITY")
+    @Column(name = "STOCK_QUANTITY")
     @Min(value = 0, message = "Stock cannot be negative")
     private Long stockQuantity;
 
