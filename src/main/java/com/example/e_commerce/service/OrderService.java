@@ -42,6 +42,8 @@ public class OrderService {
         Orders order = new Orders();
         order.setBuyer(user);
         order.setCustomerName(orderRequest.getCustomerName());
+        order.setOrderDescription(order.getOrderDescription());
+
         order.setStreetAdress(orderRequest.getStreetAdress());
         order.setAdressLine2(orderRequest.getAdressLine2());
         order.setPostalCode(orderRequest.getPostalCode());
@@ -84,6 +86,7 @@ public class OrderService {
             List <OrderResponse> orderResponse = new ArrayList<>();
             for (Orders order : orders ){
                 OrderResponse or= new OrderResponse();
+                or.setOrderDescription(order.getOrderDescription());
                 or.setCustomerName(order.getCustomerName());
                 or.setStreetAdress(order.getStreetAdress());
                 or.setCity(order.getCity());

@@ -6,7 +6,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -14,9 +17,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+@Builder
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @SQLDelete(sql = "UPDATE products SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted = false")
 @Table(name = "PRODUCTS")

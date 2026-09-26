@@ -112,9 +112,6 @@ public class ProductService {
         }
         return productResponsesList;
     }
-
-
-
     public List<ProductResponse> getCategorizedProducts1 (String category){
         List<Product> products;
 
@@ -165,15 +162,11 @@ public Product adjustStock (Long id, StockRequest stockQuantityRequest, String u
             throw  new RuntimeException("cant adjust stock");}
 
             long newStock = product.getStockQuantity() + stockQuantityRequest.getStockQuantity();
-
             if (newStock <0 ){
                 throw new IllegalArgumentException("Stock can not be negative. Check the value of the added stock!");
             }
             product.setStockQuantity(newStock);
-            return productRepository.save(product);
-}
-
-
+            return productRepository.save(product);}
 @Transactional
     public void deleteProduct (Long id, String username){
         Product product= productRepository.findById(id).orElseThrow(()->new RuntimeException("can not delete this product"));
@@ -182,7 +175,6 @@ public Product adjustStock (Long id, StockRequest stockQuantityRequest, String u
     }
     productRepository.delete(product);
 }
-
 //@Transactional
     public List<ProductResponse> getAllProducts (){
     List <Product> products = productRepository.findAll();
@@ -199,13 +191,7 @@ public Product adjustStock (Long id, StockRequest stockQuantityRequest, String u
 
                 productResponse.add(pr);
             }}
-          return productResponse;
-    }
-
-
-
-
-
+          return productResponse;}
 }
 
 

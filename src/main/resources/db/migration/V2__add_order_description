@@ -1,2 +1,0 @@
-ALTER TABLE orders
-ADD COLUMN order_description VARCHAR(500);

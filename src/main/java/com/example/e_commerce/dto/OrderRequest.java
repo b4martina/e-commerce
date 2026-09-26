@@ -18,7 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderRequest {
 
+    private String orderDescription;
     private String customerName;
+
 
     @NotBlank
     private String streetAdress;

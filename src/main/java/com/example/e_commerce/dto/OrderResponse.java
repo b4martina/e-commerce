@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 
 public class OrderResponse {
+    private String orderDescription;
 
     private String customerName;
     private String streetAdress;

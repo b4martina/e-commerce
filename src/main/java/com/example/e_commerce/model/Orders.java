@@ -27,6 +27,9 @@ public class Orders {
     @Column (name= "ORDER_ID")
     private Long orderId;
 
+    @Column(name="ORDER_DESCRIPTION")
+    private String orderDescription;
+
     @Column(name ="CUSTOMER_NAME")
     private String customerName;
 
