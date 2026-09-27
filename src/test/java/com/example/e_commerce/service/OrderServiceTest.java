@@ -36,7 +36,6 @@ public class OrderServiceTest {
     private OrderRepository orderRepository;
     @Mock
     private UserRepository userRepository;
-
     @Mock
     private ProductRepository productRepository;
 
@@ -137,7 +136,6 @@ public class OrderServiceTest {
 
             Assertions.assertThat(result.get(1).getNameOfCard())
                     .isEqualTo("name sff");
-
             verify(userRepository).findByUsername(username);
             verify(orderRepository).findByBuyerId(user.getId());}
 

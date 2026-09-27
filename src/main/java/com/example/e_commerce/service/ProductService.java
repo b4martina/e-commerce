@@ -81,6 +81,8 @@ public class ProductService {
         Page <Product> products = productRepository.findAll(pageable);
 
         return products.map(product-> new ProductResponse(
+                product.getId(),
+
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
@@ -175,7 +177,7 @@ public Product adjustStock (Long id, StockRequest stockQuantityRequest, String u
     }
     productRepository.delete(product);
 }
-//@Transactional
+
     public List<ProductResponse> getAllProducts (){
     List <Product> products = productRepository.findAll();
 

@@ -14,9 +14,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.util.List;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,25 +25,17 @@ class OrderControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @MockitoBean
     private OrderService orderService;
-
     @MockitoBean
     private JWTService jwtService;
-
     @MockitoBean
     private CustomUserDetailService customUserDetailService;
-
-
-
    // @Autowired
     //private ObjectMapper objectMapper;
-
     private String username;
     private OrderResponse order;
     private OrderResponse order1;
-
     @BeforeEach
     void setUp() {
 
@@ -65,7 +55,6 @@ class OrderControllerTest {
         order1.setCard(false);
         order1.setNameOfCard("name second");
     }
-
     @Test
     @WithMockUser(username = "username")
     void getOrders_returnsUserOrders()

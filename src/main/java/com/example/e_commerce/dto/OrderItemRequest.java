@@ -14,7 +14,7 @@ import org.hibernate.annotations.NativeGenerator;
 public class OrderItemRequest {
 
     @NotNull
-    private Long ProductId;
+    private Long productId;
 
     @Min(1)
     private int quantity;
