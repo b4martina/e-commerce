@@ -91,7 +91,7 @@ public class ProductService {
         ));
     }
 
-    public List<ProductResponse> getCategorizedProducts (Category category){
+    /*public List<ProductResponse> getCategorizedProducts (Category category){
         List<Product> products;
 
         if (category == null ){
@@ -113,8 +113,8 @@ public class ProductService {
             productResponsesList.add(pr);
         }
         return productResponsesList;
-    }
-    public List<ProductResponse> getCategorizedProducts1 (String category){
+    }*/
+    public List<ProductResponse> getCategorizedProducts (Category category){
         List<Product> products;
 
         if (category == null ){

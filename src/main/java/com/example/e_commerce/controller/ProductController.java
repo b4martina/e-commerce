@@ -35,7 +35,7 @@ public class ProductController {
     }
 
     @PostMapping("/create-product")
-    public ResponseEntity <?> createProduct(Authentication authentication, @RequestBody ProductRequest productRequest){
+    public ResponseEntity <?> createProduct(Authentication authentication, @RequestBody ProductRequest productRequest) {
         String username = authentication.getName();
 
         Product product = productService.createProduct( username, productRequest);
@@ -44,7 +44,6 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity <?> getProductById(@PathVariable Long id) throws ProductNotAvailableException {
-
         ProductResponse product = productService.getProductById(id);
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
@@ -55,28 +54,22 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/category")
+  /*  @GetMapping("/category")
     public List<ProductResponse> filterByCategory (@RequestParam(required = false) Category category){
         return productService.getCategorizedProducts(category);
 
-    }
-
-    @GetMapping("/categorie")
-    public List<ProductResponse> filterByCategory1 (@RequestParam(required = false) String category){
-        return productService.getCategorizedProducts1(category);
-
+    }*/
+    @GetMapping("/category")
+    public List<ProductResponse> filterByCategory1 (@RequestParam(required = false) Category category){
+        return productService.getCategorizedProducts(category);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Product> updateProduct (@PathVariable Long id, @RequestBody ProductRequest productRequest, Authentication authentication){
 
         String username = authentication.getName();
-
-
         return ResponseEntity.ok( productService.updatedProduct(id, productRequest, username));
-
     }
-
     @PatchMapping("/update/{id}/stock")
     public ResponseEntity<Product> adjustStock(
             @PathVariable Long id,
@@ -89,7 +82,6 @@ public class ProductController {
                 productService.adjustStock(id, request, username)
         );
     }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id, Authentication authentication){
 
@@ -97,16 +89,8 @@ public class ProductController {
         productService.deleteProduct(id, username);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
-
     @GetMapping ("/all-products")
     public List<ProductResponse> getAllProducts(){
         return productService.getAllProducts();
     }
-
-
-
-
-
-
 }
