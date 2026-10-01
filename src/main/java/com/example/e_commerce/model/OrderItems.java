@@ -20,17 +20,13 @@ public class OrderItems {
 
     @Column(name="ORDER_ITEM_ID")
     private Long id;
-
     @Column(name = "QUANTITY")
     private int quantity;
-
     @Column(name = "PRICE")
     private BigDecimal price;
-
     @ManyToOne
     @JoinColumn(name="ORDER_ID")
     private Orders order;
-
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;

@@ -21,10 +21,8 @@ public class OrderRequest {
     private String orderDescription;
     private String customerName;
 
-
     @NotBlank
     private String streetAdress;
-
 
     @NotBlank
     private String adressLine2;
@@ -39,9 +37,7 @@ public class OrderRequest {
 
     @NotBlank
     private String nameOfCard;
-
     private Long cardNumber;
-
     private LocalDate expirationDate;
 
     private Long securityCode;

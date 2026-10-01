@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,6 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
 
     @Column (name= "ORDER_ID")
     private Long orderId;
@@ -47,7 +47,6 @@ public class Orders {
 
     @Column(name="CARD")
     private boolean card;
-
     @Column(name="NAME_OF_CARD")
     private String nameOfCard;
 
@@ -65,8 +64,13 @@ public class Orders {
     @JoinColumn(name = "BUYER_ID")
     private User buyer;
 
+    @Column (name = "ORDER_PRICE", precision = 22, scale = 2)
+    private BigDecimal orderPrice;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonIgnore
     private List <OrderItems > orderItems = new ArrayList<>();
+
+
 
 }

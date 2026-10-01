@@ -1,21 +1,18 @@
 package com.example.e_commerce.dto;
 
-
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NativeGenerator;
 
+import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderItemRequest {
-
-    @NotNull
+public class CartItemResponse {
     private Long productId;
-    @Min(1)
+    private String productName;
     private int quantity;
+    private BigDecimal price;
+    private BigDecimal itemTotal;
 
 }

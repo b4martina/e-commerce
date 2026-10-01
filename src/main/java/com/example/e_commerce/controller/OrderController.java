@@ -1,6 +1,8 @@
 package com.example.e_commerce.controller;
 
 
+import com.example.e_commerce.dto.CartRequest;
+import com.example.e_commerce.dto.CartResponse;
 import com.example.e_commerce.dto.OrderRequest;
 import com.example.e_commerce.dto.OrderResponse;
 import com.example.e_commerce.exceptions.OrderNotAvailableException;
@@ -8,6 +10,7 @@ import com.example.e_commerce.exceptions.ProductNotAvailableException;
 import com.example.e_commerce.model.Orders;
 import com.example.e_commerce.service.OrderService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,5 +32,11 @@ public class OrderController {
     public List<OrderResponse> getAllUserOrders ( Authentication authentication) throws OrderNotAvailableException {
         String username = authentication.getName();
         return orderService.getUserOrders(username);
+    }
+
+    @PostMapping("/final-cart")
+    public ResponseEntity<?> previewOrder (@Valid @RequestBody CartRequest cartRequest ) throws ProductNotAvailableException {
+        CartResponse cartResponse = orderService.previewOrder(cartRequest);
+        return ResponseEntity.ok(cartResponse);
     }
 }

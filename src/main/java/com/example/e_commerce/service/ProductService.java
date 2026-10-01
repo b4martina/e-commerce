@@ -161,7 +161,7 @@ public Product adjustStock (Long id, StockRequest stockQuantityRequest, String u
                 .orElseThrow(()-> new RuntimeException("cant adjust"));
 
         if (!product.getProductOwner().getUsername().equals(username)){
-            throw  new RuntimeException("cant adjust stock");}
+            throw  new RuntimeException("Can not adjust stock");}
 
             long newStock = product.getStockQuantity() + stockQuantityRequest.getStockQuantity();
             if (newStock <0 ){

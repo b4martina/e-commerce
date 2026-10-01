@@ -17,8 +17,6 @@ import java.util.List;
 //part 1 regarding  security this is the first class created after the basic cladsses. here i have created load user by username anad mapped roles to authorities
 //
 
-
-
 @Service
 public class CustomUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;

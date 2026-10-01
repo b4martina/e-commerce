@@ -6,16 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NativeGenerator;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderItemRequest {
-
+public class CartItemRequest {
     @NotNull
     private Long productId;
     @Min(1)
     private int quantity;
-
 }
